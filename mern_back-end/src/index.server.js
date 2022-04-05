@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 
+const cors = require('cors');
+
 // router
 const authRouters = require('./routes/authRoute');
 const adminRouters = require('./routes/adminRoute/authAdminRoute');
@@ -24,6 +26,7 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO
 .catch(() => {
     console.log("Connect MongoDB failure!")
 });
+app.use(cors());
 app.use(express.json());
 // app.use(express.static(path.join(__dirname,'uploads')))
 app.use('/public',express.static(path.join(__dirname,'uploads')))

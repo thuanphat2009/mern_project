@@ -1,7 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout";
-import { Link } from "react-router-dom";
+import { Link,Navigate } from "react-router-dom";
+import { isUserLoggedIn, login } from "../../actions";
+import {useDispatch, useSelector} from 'react-redux';
+
 function Dangnhap() {
+
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if(!auth.authenticate){
+      dispatch(isUserLoggedIn());
+    }
+  }, []);
+  const userLogin = (e) => {
+    e.preventDefault();
+    const user = {
+      email, password
+    };
+    dispatch(login(user));
+  };
+  if(auth.authenticate){
+    return <Navigate to={`/`} />
+  }
   return (
     <Layout>
       <div className="limiter">
@@ -10,26 +35,37 @@ function Dangnhap() {
             <div className="login100-pic js-tilt" data-tilt>
               <img src="./images/img-01.png" alt="IMG" />
             </div>
-            <form className="login100-form validate-form">
+            <form onSubmit={userLogin} className="login100-form validate-form">
               <span className="login100-form-title">Đăng nhập admin</span>
-              <div className="wrap-input100 validate-input" data-validate="Email phải có định dạng: ex@abc.xyz">
+              <div
+                className="wrap-input100 validate-input"
+                data-validate="Email phải có định dạng: ex@abc.xyz"
+              >
                 <input
                   className="input100"
                   type="text"
                   name="email"
                   placeholder="Email"
+                  value={email}
+                  onChange={(e) =>setEmail(e.target.value)}
                 />
                 <span className="focus-input100" />
                 <span className="symbol-input100">
                   <i className="fa fa-envelope" aria-hidden="true" />
                 </span>
               </div>
-              <div className="wrap-input100 validate-input" data-validate="Mật khẩu không được bỏ trống">
+              <div
+                className="wrap-input100 validate-input"
+                data-validate="Mật khẩu không được bỏ trống"
+              >
                 <input
                   className="input100"
                   type="password"
                   name="pass"
                   placeholder="Mật khẩu"
+                  value={password}
+                  onChange={(e) =>setPassword(e.target.value)}
+
                 />
                 <span className="focus-input100" />
                 <span className="symbol-input100">
