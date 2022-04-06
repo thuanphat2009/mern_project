@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout";
 import { Link,Navigate } from "react-router-dom";
-import { isUserLoggedIn, login } from "../../actions";
+import { login } from "../../actions";
 import {useDispatch, useSelector} from 'react-redux';
 
 function Dangnhap() {
@@ -12,11 +12,7 @@ function Dangnhap() {
   const [error, setError] = useState('');
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  useEffect(() => {
-    if(!auth.authenticate){
-      dispatch(isUserLoggedIn());
-    }
-  }, []);
+  
   const userLogin = (e) => {
     e.preventDefault();
     const user = {
